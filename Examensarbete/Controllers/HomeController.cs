@@ -5,15 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Examensarbete.Models;
-using Examensarbete.BusinessLayer;
+using Examensarbete.Services;
 
 namespace Examensarbete.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IBusinessService _businessService;
+        private readonly IExamService _businessService;
 
-        public HomeController(IBusinessService businessService)
+        public HomeController(IExamService businessService)
         {
             _businessService = businessService;
         }

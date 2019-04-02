@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Examensarbete.BusinessLayer;
+using Examensarbete.Services;
 using Examensarbete.Data.Identity;
 using Examensarbete.DataLayer;
 using Examensarbete.Models;
@@ -41,11 +41,8 @@ namespace Examensarbete
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //Lägga till en context för att kunna komunicera med Identity 
-            services.AddDbContext<ExamensarbeteContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             //Sätter upp identity tjänsten
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -54,12 +51,14 @@ namespace Examensarbete
 
             //services.AddTransient<IDataService, DataService>();
             //services.AddTransient<IBusinessService, BusinessService>();
-            services.AddScoped<IDataService, DataService>();
-            services.AddScoped<IBusinessService, BusinessService>();
+            services.AddScoped<IExamService, ExamServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+                            UserManager<ApplicationUser> userManager,
+                                RoleManager<IdentityRole> roleManager,
+                                ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -70,6 +69,9 @@ namespace Examensarbete
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            Seeder.SeedData(userManager, roleManager, context);
+            Seeder.SeedAdminRoleToUser(userManager);
 
             //Identity
             app.UseAuthentication();

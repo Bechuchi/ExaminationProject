@@ -9,9 +9,9 @@ namespace Examensarbete.Models
         public int HeaderContentId { get; set; }
         public int BodyContentId { get; set; }
         public int AnswerContentId { get; set; }
+        public int ExamId { get; set; }
 
-        public Content AnswerContent { get; set; }
-        public Content BodyContent { get; set; }
+        public Exam Exam { get; set; }
         public Content HeaderContent { get; set; }
     }
 }

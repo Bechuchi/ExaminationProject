@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Examensarbete.BusinessLayer
+namespace Examensarbete.Services
 {
-    public interface IBusinessService
+    public interface IExamService
     {
     }
 }
