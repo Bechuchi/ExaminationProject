@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Examensarbete.Models;
 using Examensarbete.Services;
+using Examensarbete.ViewModels.TopicViewModels;
 
 namespace Examensarbete.Controllers
 {
@@ -20,7 +21,35 @@ namespace Examensarbete.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            TopicViewModel loops = new TopicViewModel
+            {
+                Id = 3,
+                Name = "Loops",
+                Areas = new List<string>
+                {
+                    "Fact",
+                    "Exercices",
+                    "Exams"
+                }
+            };
+
+            TopicViewModel functions = new TopicViewModel
+            {
+                Id = 4,
+                Name = "Functions",
+                Areas = new List<string>
+                {
+                    "Fact",
+                    "Exercices",
+                    "Exams"
+                }
+            };
+
+            List<TopicViewModel> viewModel = new List<TopicViewModel>();
+            viewModel.Add(loops);
+            viewModel.Add(functions);
+
+            return View(viewModel);
         }
 
         public IActionResult About()
