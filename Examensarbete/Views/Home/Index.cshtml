@@ -1,85 +1,59 @@
-﻿@model IEnumerable<Examensarbete.ViewModels.TopicViewModels.TopicViewModel>
+﻿@model Examensarbete.ViewModels.CourseViewModels.CourseViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div style="margin: 20px; width: 200px">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" style="font-weight: bold" href="#collapseThree">3. Loops</a>
-                </h3>
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <h5>FACTS</h5>
-                    <h5>EXERCISES</h5>
-                    <h5>EXAMS</h5>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" style="font-weight: bold" href="#collapseFour">4. Functions</a>
-                </h3>
-            </div>
-            <div id="collapseFour" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <h5>
-                        <a>FACTS</a>
-                    </h5>
-                    <h5>EXERCISES</h5>
-                    <h5>EXAMS</h5>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" style="font-weight: bold" href="#collapseFive">5. Design Patterns</a>
-                </h3>
-            </div>
-            <div id="collapseFive" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <h5>FACTS</h5>
-                    <h5>EXERCISES</h5>
-                    <h5>EXAMS</h5>
-                </div>
-            </div>
-        </div>
-        @*@foreach(var topic in Model)
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" style="font-weight: bold" href="#collapse">@topic.Id @topic.Name</a>
-                    </h3>
-                </div>
-                <div id="collapse" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        @foreach (var area in topic.Areas)
-                        {
-                            <h4>
-                                @area.ToString()
-                            </h4>
-                        }
+<h1>@Model.Name</h1>
+
+<div id="wrapper" style="overflow: hidden">
+    <div id="firstDiv" style="float: left; margin: 20px; width: 200px">
+        <div class="panel-group" id="accordion">
+            @foreach (var topic in Model.Content)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a href="#@topic.Id" data-toggle="collapse" data-parent="#accordion" style="font-weight: bold">@topic.Id. @topic.Name</a>
+                        </h3>
+                    </div>
+                    <div id="@topic.Id" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <h5>
+                                <a onclick="viewData(@topic.Id)">Fact</a>
+                            </h5>
+                            <h5>
+                                <a>Exercises</a>
+                            </h5>
+                            <h5>
+                                <a>Exams</a>
+                            </h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }*@
+            }
+        </div>
+    </div>
+    <div id="currentData" style="float: left; background-color: indianred">
+        
     </div>
 </div>
 
-<div id="currentArea">
-    <p>Testetsgdgdhdhhdhhd</p>
-</div>
+<script>
+    function viewData(id) {
+        var element = document.getElementById("currentData");
+        element.innerHTML = "hejhej";
 
-@section Scripts {
-    <script>
-        function test(id) {
-            var area = document.getElementById("collapse").textContent = "test";
-        }
-    </script>
-}
+        @*var id = id;
+        var sendData = { id: id }
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SetDataWindow", "Home")",
+            data: sendData,
+            success: function (data) {
+                location.reload();
+            },
+            traditional: true
+        });*@
+    }
+</script>

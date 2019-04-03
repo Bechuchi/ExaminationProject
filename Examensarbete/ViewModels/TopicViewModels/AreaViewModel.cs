@@ -7,7 +7,10 @@ namespace Examensarbete.ViewModels.TopicViewModels
 {
     public class AreaViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public List<FactViewModel> Facts { get; set; }
+
+        public List<ExerciseViewModel> Exercises { get; set; }
+
+        public List<ExamViewModel> Exams { get; set; }
     }
 }

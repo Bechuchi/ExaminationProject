@@ -7,49 +7,91 @@ using Microsoft.AspNetCore.Mvc;
 using Examensarbete.Models;
 using Examensarbete.Services;
 using Examensarbete.ViewModels.TopicViewModels;
+using Examensarbete.ViewModels.CourseViewModels;
+using Examensarbete.Data.Identity;
 
 namespace Examensarbete.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IExamService _businessService;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(IExamService businessService)
+        public HomeController(ApplicationDbContext context,
+                              IExamService businessService)
         {
+            _context = context;
             _businessService = businessService;
         }
 
         public IActionResult Index()
         {
-            TopicViewModel loops = new TopicViewModel
+            CourseViewModel viewModel = new CourseViewModel
             {
-                Id = 3,
-                Name = "Loops",
-                Areas = new List<string>
+                Name = "Programming For Dummies",
+                Content = new List<TopicViewModel>
                 {
-                    "Fact",
-                    "Exercices",
-                    "Exams"
+                    new TopicViewModel
+                    {
+                        Id = 1,
+                        Name = "Background",
+                    },
+                    new TopicViewModel
+                    {
+                        Id = 2,
+                        Name = "Variables"
+                    },
+                    new TopicViewModel
+                    {
+                        Id = 3,
+                        Name = "Loops",
+                        Facts = new List<FactViewModel>
+                        {
+                            new FactViewModel
+                            {
+                                Id = 1,
+                                TopicId = 3,
+                                Header = "While loop"
+                            },
+                            new FactViewModel
+                            {
+                                Id = 2,
+                                TopicId = 3,
+                                Header = "For loop"
+                            },
+                            new FactViewModel
+                            {
+                                Id = 3,
+                                TopicId = 3,
+                                Header = "Do-While loop"
+                            }
+                        }
+                    },
+                    new TopicViewModel
+                    {
+                        Id = 4,
+                        Name = "Functions"
+                    },
+                    new TopicViewModel
+                    {
+                        Id = 5,
+                        Name = "Design Patterns"
+                    }
                 }
             };
-
-            TopicViewModel functions = new TopicViewModel
-            {
-                Id = 4,
-                Name = "Functions",
-                Areas = new List<string>
-                {
-                    "Fact",
-                    "Exercices",
-                    "Exams"
-                }
-            };
-
-            List<TopicViewModel> viewModel = new List<TopicViewModel>();
-            viewModel.Add(loops);
-            viewModel.Add(functions);
 
             return View(viewModel);
+        }
+
+        public void SetDataWindow(int id)
+        {
+            var facts = new FactViewModel
+            {
+                Header = "LOOPS",
+                Text = "for loop is loooooooooop"
+            };
+
+            
         }
 
         public IActionResult About()
@@ -61,35 +103,7 @@ namespace Examensarbete.Controllers
 
         public IActionResult Contact()
         {
-            TopicViewModel loops = new TopicViewModel
-            {
-                Id = 3,
-                Name = "Loops",
-                Areas = new List<string>
-                {
-                    "Fact",
-                    "Exercices",
-                    "Exams"
-                }
-            };
-
-            TopicViewModel functions = new TopicViewModel
-            {
-                Id = 4,
-                Name = "Functions",
-                Areas = new List<string>
-                {
-                    "Fact",
-                    "Exercices",
-                    "Exams"
-                }
-            };
-
-            List<TopicViewModel> viewModel = new List<TopicViewModel>();
-            viewModel.Add(loops);
-            viewModel.Add(functions);
-
-            return View(viewModel);
+            return View();
         }
 
         public IActionResult Privacy()
