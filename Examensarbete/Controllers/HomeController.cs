@@ -61,9 +61,35 @@ namespace Examensarbete.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            TopicViewModel loops = new TopicViewModel
+            {
+                Id = 3,
+                Name = "Loops",
+                Areas = new List<string>
+                {
+                    "Fact",
+                    "Exercices",
+                    "Exams"
+                }
+            };
 
-            return View();
+            TopicViewModel functions = new TopicViewModel
+            {
+                Id = 4,
+                Name = "Functions",
+                Areas = new List<string>
+                {
+                    "Fact",
+                    "Exercices",
+                    "Exams"
+                }
+            };
+
+            List<TopicViewModel> viewModel = new List<TopicViewModel>();
+            viewModel.Add(loops);
+            viewModel.Add(functions);
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
