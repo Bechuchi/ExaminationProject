@@ -1,12 +1,17 @@
-﻿@model Examensarbete.ViewModels.CourseViewModels.CourseViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Examensarbete.ViewModels.CourseViewModel
+@inject IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = Localizer["Home Page"];
 }
+
+<h1>@ViewData["MyTitle"]</h1>
 
 <h1>@Model.Name</h1>
 
 <div id="wrapper" style="overflow: hidden">
-    <div id="firstDiv" style="float: left; margin: 20px; width: 200px">
+    <div id="firstDiv">
         <div class="panel-group" id="accordion">
             @foreach (var topic in Model.Content)
             {
@@ -19,7 +24,10 @@
                     <div id="@topic.Id" class="panel-collapse collapse">
                         <div class="panel-body">
                             <h5>
-                                <a onclick="viewData(@topic.Id)">Fact</a>
+                                @foreach(var fact in topic.Facts)
+                                {
+                                    <a onclick="viewData(@fact.Id)">@fact.Header</a>
+                                }
                             </h5>
                             <h5>
                                 <a>Exercises</a>
@@ -43,17 +51,17 @@
         var element = document.getElementById("currentData");
         element.innerHTML = "hejhej";
 
-        @*var id = id;
+        var id = id;
         var sendData = { id: id }
 
         $.ajax({
             type: "POST",
-            url: "@Url.Action("SetDataWindow", "Home")",
+            url: "@Url.Action("ShowFact", "Home")",
             data: sendData,
             success: function (data) {
-                location.reload();
+                element.innerHTML = data
             },
             traditional: true
-        });*@
+        });
     }
 </script>

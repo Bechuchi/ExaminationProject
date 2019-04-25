@@ -15,6 +15,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Examensarbete
 {
@@ -30,6 +34,9 @@ namespace Examensarbete
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Localization
+            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -38,7 +45,33 @@ namespace Examensarbete
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                //Localization
+                .AddViewLocalization(
+                    LanguageViewLocationExpanderFormat.Suffix,
+                    opts => { opts.ResourcesPath = "Resources"; })
+                .AddDataAnnotationsLocalization();
+
+            //Localization
+            services.Configure<RequestLocalizationOptions>(
+                opts =>
+                {
+                    var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en-GB"),
+                        new CultureInfo("en-US"),
+                        new CultureInfo("en"),
+                        new CultureInfo("fr-FR"),
+                        new CultureInfo("fr")
+                    };
+
+                    opts.DefaultRequestCulture = new RequestCulture("en-GB");
+                    //Formating dates, numbers etc
+                    opts.SupportedCultures = supportedCultures;
+                    //UI string that we have localized
+                    opts.SupportedUICultures = supportedCultures;
+                });
 
             //Lägga till en context för att kunna komunicera med Identity 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -55,10 +88,11 @@ namespace Examensarbete
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-                            UserManager<ApplicationUser> userManager,
-                                RoleManager<IdentityRole> roleManager,
-                                ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app,
+                              IHostingEnvironment env,
+                              UserManager<ApplicationUser> userManager,
+                              RoleManager<IdentityRole> roleManager,
+                              ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -78,6 +112,10 @@ namespace Examensarbete
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            //Localization
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
 
             app.UseMvc(routes =>
             {

@@ -12,6 +12,7 @@ namespace Examensarbete.Models
         public int SortOrder { get; set; }
         public int TopicId { get; set; }
 
+        public Content BodyContent { get; set; }
         public Content HeaderContent { get; set; }
         public Topic Topic { get; set; }
     }

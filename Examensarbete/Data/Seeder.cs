@@ -19,22 +19,80 @@ namespace Examensarbete.DataLayer
 
         public static void SeedTopic(ApplicationDbContext context)
         {
+            if (context.Topic.Count() > 0)
+            {
+                return;
+            }
+
             var topic = new Topic();
             topic.NameContent = new Content();
 
             var languageContent = new LanguageContent();
             languageContent.LanguageCode = "sv";
-            languageContent.Content = "Variabler";
+            languageContent.Content = "Loops";
             topic.NameContent.LanguageContent.Add(languageContent);
 
             languageContent = new LanguageContent();
             languageContent.LanguageCode = "fr";
-            languageContent.Content = "Variabler fr";
+            languageContent.Content = "Loops fr";
             topic.NameContent.LanguageContent.Add(languageContent);
+
+            var fact1 = new Facts();
+            topic.Facts.Add(fact1);
+            fact1.HeaderContent = new Content();
+            fact1.BodyContent = new Content();
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "sv";
+            languageContent.Content = "If loop";
+            fact1.HeaderContent.LanguageContent.Add(languageContent);
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "fr";
+            languageContent.Content = "If loop fr";
+            fact1.HeaderContent.LanguageContent.Add(languageContent);
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "sv";
+            languageContent.Content = "Här ska if loop body vara";
+            fact1.BodyContent.LanguageContent.Add(languageContent);
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "fr";
+            languageContent.Content = "Ici ce le if loop body";
+            fact1.BodyContent.LanguageContent.Add(languageContent);
+
+            //WHILE
+            var fact2 = new Facts();
+            topic.Facts.Add(fact2);
+            fact2.HeaderContent = new Content();
+            fact2.BodyContent = new Content();
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "sv";
+            languageContent.Content = "While loop";
+            fact2.HeaderContent.LanguageContent.Add(languageContent);
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "fr";
+            languageContent.Content = "While loop fr";
+            fact2.HeaderContent.LanguageContent.Add(languageContent);
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "sv";
+            languageContent.Content = "Här ska While loop body vara";
+            fact2.BodyContent.LanguageContent.Add(languageContent);
+
+            languageContent = new LanguageContent();
+            languageContent.LanguageCode = "fr";
+            languageContent.Content = "Ici ce le While loop body";
+            fact2.BodyContent.LanguageContent.Add(languageContent);
 
             context.Topic.Add(topic);
             context.SaveChanges();
         }
+
+
 
         public static void SeedRoles(RoleManager<IdentityRole> roleManager)
         {

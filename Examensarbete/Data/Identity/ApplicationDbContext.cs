@@ -44,11 +44,11 @@ namespace Examensarbete.Data.Identity
 
             modelBuilder.Entity<Facts>(entity =>
             {
-                entity.HasOne(d => d.HeaderContent)
-                    .WithMany(p => p.Facts)
-                    .HasForeignKey(d => d.HeaderContentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Facts_Content");
+                //entity.HasOne(d => d.HeaderContent)
+                //    .WithMany(p => p.Facts)
+                //    .HasForeignKey(d => d.HeaderContentId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Facts_Content");
 
                 entity.HasOne(d => d.Topic)
                     .WithMany(p => p.Facts)
