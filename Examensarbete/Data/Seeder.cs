@@ -10,7 +10,8 @@ namespace Examensarbete.DataLayer
 {
     public class Seeder
     {
-        public static void SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
+        public static void SeedData(UserManager<ApplicationUser> userManager,
+                                    RoleManager<IdentityRole> roleManager,
                                     ApplicationDbContext context)
         {
             SeedRoles(roleManager);
@@ -91,8 +92,6 @@ namespace Examensarbete.DataLayer
             context.Topic.Add(topic);
             context.SaveChanges();
         }
-
-
 
         public static void SeedRoles(RoleManager<IdentityRole> roleManager)
         {

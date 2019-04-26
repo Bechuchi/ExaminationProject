@@ -43,8 +43,14 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; 2019 - Examensarbete</p>
+        <footer class="row">
+            <div class="col-sm-6">
+                <p>&copy; 2019 - Examensarbete</p>
+            </div>
+
+            <div class="col-sm-6 text-right">
+                @await Html.PartialAsync("_SelectLanguagePartial")
+            </div>
         </footer>
     </div>
 

@@ -35,6 +35,8 @@ namespace Examensarbete
         public void ConfigureServices(IServiceCollection services)
         {
             //Localization
+            //Gör så man kan injecta ILOcalizer i klasser
+            //Tillåter också MyView.fr.cshtml (olika vyer) där man injectar IVIewLocaliser
             services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -54,6 +56,12 @@ namespace Examensarbete
                 .AddDataAnnotationsLocalization();
 
             //Localization
+            //the RequestLocalizationMiddleware (ger oss alla val(?))
+            // Dessa tre använder middleware TODO
+
+            //1.QueryStringRequestCultureProvider
+            //2.AcceptLanguageHeaderRequestCultureProvider
+            //3.CookieRequestCultureProvider
             services.Configure<RequestLocalizationOptions>(
                 opts =>
                 {
@@ -65,7 +73,8 @@ namespace Examensarbete
                         new CultureInfo("fr-FR"),
                         new CultureInfo("fr")
                     };
-
+                    
+                    //TODO fatta när default väljs
                     opts.DefaultRequestCulture = new RequestCulture("en-GB");
                     //Formating dates, numbers etc
                     opts.SupportedCultures = supportedCultures;

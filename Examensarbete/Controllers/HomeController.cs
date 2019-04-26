@@ -10,6 +10,8 @@ using Examensarbete.ViewModels;
 using Examensarbete.Data.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Examensarbete.Controllers
 {
@@ -26,28 +28,64 @@ namespace Examensarbete.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                );
+
+            return LocalRedirect(returnUrl);
+        }
+
         public IActionResult Index()
         {
-            var topics = _context.Topic
-                .Select(x => new TopicViewModel
-                {
-                    Id = x.Id,
-                    Name = x.NameContent.LanguageContent.First(l => l.LanguageCode == "fr").Content,
-                    Facts = x.Facts.Select(f => new FactViewModel
-                    {
-                        Id = f.Id,
-                        Header = f.HeaderContent.LanguageContent.First(l => l.LanguageCode == "fr").Content,
-                        Text = f.BodyContent.LanguageContent.First(l => l.LanguageCode == "fr").Content
-                    }).ToList()
-                }).ToList();
+            //Key/name är det i ["..."]
+            //_localiser som översätter strängar
+            ViewData["MyTitle"] = _localizer["The localised title of my app!"];
 
-            var viewModel = new CourseViewModel
+            //var topics = _context.Topic
+            //    .Select(x => new TopicViewModel
+            //    {
+            //        Id = x.Id,
+            //        Name = x.NameContent.LanguageContent.First(l => l.LanguageCode == "fr").Content,
+            //        Facts = x.Facts.Select(f => new FactViewModel
+            //        {
+            //            Id = f.Id,
+            //            Header = f.HeaderContent.LanguageContent.First(l => l.LanguageCode == "fr").Content,
+            //            Text = f.BodyContent.LanguageContent.First(l => l.LanguageCode == "fr").Content
+            //        }).ToList()
+            //    }).ToList();
+
+            //var viewModel = new CourseViewModel
+            //{
+            //    Name = "Programming for dummies",
+            //    Content = topics
+            //};
+
+            //return View(viewModel);
+
+            return View(new HomeViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Index(HomeViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+
             {
-                Name = "Programming for dummies",
-                Content = topics
-            };
 
-            return View(viewModel);
+                return View(model);
+
+            }
+
+            ViewData["Result"] = _localizer["Success!"];
+
+            return View(model);
+
         }
 
         //Ajax gick med POS
